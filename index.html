@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bidibo AI - Smart AI Assistant</title>
+  <meta name="description" content="Bidibo AI is an advanced AI chat application, developed by Nabil Bin Billal. Enjoy smart, emoji-rich conversations!" />
+  <meta name="keywords" content="Bidibo AI, AI chat, Ollama, Nabil Bin Billal, artificial intelligence, chatbot" />
+  <meta name="author" content="Nabil Bin Billal" />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Bidibo AI - Smart Chat" />
+  <meta property="og:description" content="Chat with Bidibo AI, a locally-hosted AI powered by Ollama, crafted by Nabil Bin Billal. Get smart, emoji-rich responses!" />
+  <meta property="og:image" content="https://em-content.zobj.net/source/microsoft-teams/363/robot_1f916.png" />
+  <meta property="og:url" content="https://your-vercel-app.vercel.app" />
+  <meta property="og:type" content="website" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bidibo AI - Smart Chat Powered by Ollama" />
+  <meta name="twitter:description" content="Experience Bidibo AI, a locally-hosted chatbot by Nabil Bin Billal. Powered by Ollama with a modern, emoji-rich interface." />
+  <meta name="twitter:image" content="https://em-content.zobj.net/source/microsoft-teams/363/robot_1f916.png" />
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Bidibo AI",
+      "description": "A locally-hosted AI chat application powered by Ollama, developed by Nabil Bin Billal.",
+      "url": "https://your-vercel-app.vercel.app",
+      "creator": {
+        "@type": "Person",
+        "name": "Nabil Bin Billal",
+        "url": "https://nabilbinbillal.github.io"
+      },
+      "applicationCategory": "Communication",
+      "operatingSystem": "Web"
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
+  </script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e40af, #7e22ce);
+      font-family: 'Inter', sans-serif;
+      color: #fff;
+    }
+    .light body {
+      background: linear-gradient(135deg, #dbeafe, #f3e8ff);
+      color: #1e40af;
+    }
+    .light .message {
+      background-color: #eff6ff !important;
+      color: #1e40af !important;
+    }
+    .light .copy-btn, .light .edit-btn {
+      color: #6b7280 !important;
+    }
+    .light .suggestion:hover {
+      background-color: #bfdbfe !important;
+    }
+    .light .button {
+      background-color: #bfdbfe !important;
+      color: #1e40af !important;
+    }
+    .light .button:hover {
+      background-color: #93c5fd !important;
+    }
+    .light select, .light textarea, .light input {
+      background-color: #fff !important;
+      color: #1e40af !important;
+      border-color: #93c5fd !important;
+    }
+    .light #chat, .light label, .light .text-lg, .light .font-medium {
+      color: #1e40af !important;
+    }
+    h1 {
+      font-family: 'Poppins', sans-serif;
+    }
+    .message {
+      opacity: 0;
+      animation: fadeIn 0.3s ease-in forwards;
+      background: rgba(17, 24, 39, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .message:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+    }
+    .typing::after {
+      content: '|';
+      animation: blink 1s infinite;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    @keyframes logoRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .suggestion {
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .suggestion:hover {
+      background-color: #7c3aed;
+      transform: scale(1.01);
+    }
+    .button {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+    }
+    .copy-btn, .edit-btn {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .message:hover .copy-btn, .message:hover .edit-btn {
+      opacity: 1;
+    }
+    @media (max-width: 640px) {
+      .copy-btn, .edit-btn {
+        opacity: 1;
+      }
+    }
+    #suggestions {
+      max-height: 100px;
+      z-index: 30;
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    .light #suggestions {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+    input:focus, textarea:focus, select:focus {
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+      border-color: #3b82f6;
+    }
+    .offline-form {
+      background: rgba(17, 24, 39, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    .light .offline-form {
+      background: rgba(255, 255, 255, 0.95);
+    }
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .theme-toggle svg {
+      transition: transform 0.3s ease;
+    }
+    .theme-toggle:hover svg {
+      transform: rotate(15deg);
+    }
+    footer {
+      opacity: 0;
+      animation: fadeIn 1s ease-in forwards 0.5s;
+    }
+    .message-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #93c5fd;
+    }
+    .ai-label {
+      color: #d8b4fe;
+    }
+    .light .message-label {
+      color: #3b82f6;
+    }
+    .light .ai-label {
+      color: #a78bfa;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4 sm:p-6">
+  <div class="w-full max-w-4xl flex-1 flex flex-col">
+    <header class="flex flex-col items-center mb-6 relative">
+      <img src="https://em-content.zobj.net/source/microsoft-teams/363/robot_1f916.png" alt="Bidibo AI Logo" class="w-24 h-24 mb-2" style="animation: logoRotate 20s linear infinite" />
+      <h1 class="text-4xl sm:text-5xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+        Bidibo AI
+      </h1>
+      <button id="theme-toggle" class="theme-toggle button bg-gray-700 text-white absolute right-0 top-0 shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="Toggle theme">
+        <span id="theme-toggle-icon">
+          <svg id="theme-sun" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5" fill="#fbbf24"/>
+            <g stroke="#fbbf24">
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </g>
+          </svg>
+          <svg id="theme-moon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" fill="#818cf8"/>
+          </svg>
+        </span>
+      </button>
+    </header>
+
+    <main class="flex-1">
+      <div class="mb-6">
+        <label for="model" class="block mb-2 text-lg font-medium">Select Model</label>
+        <select id="model" class="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200" aria-label="Select AI model">
+          <option value="phi3:latest">phi3:latest (⚡ Faster, lower quality 😅)</option>
+          <option value="llama3:8b">llama3:8b (🐢 Slower, higher quality 🌟)</option>
+        </select>
+      </div>
+
+      <div id="prompt-container" class="mb-6 relative">
+        <label for="prompt" class="block mb-2 text-lg font-medium">Your Prompt</label>
+        <div class="relative flex items-center">
+          <textarea id="prompt" rows="2" placeholder="Type your prompt..."
+            class="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none transition-all duration-200" aria-label="Enter your prompt"></textarea>
+          <button id="send-btn" onclick="sendPrompt()" title="Send prompt"
+            class="absolute right-2 bottom-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white p-2 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-400 z-10 group disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
+            disabled aria-label="Send prompt">
+            <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-12">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M7 16c-.595 0-1.077-.462-1.077-1.032V1.032C5.923.462 6.405 0 7 0s1.077.462 1.077 1.032v13.936C8.077 15.538 7.595 16 7 16z" fill="currentColor"></path>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M.315 7.44a1.002 1.002 0 0 1 0-1.46L6.238.302a1.11 1.11 0 0 1 1.523 0c.421.403.421 1.057 0 1.46L1.838 7.44a1.11 1.11 0 0 1-1.523 0z" fill="currentColor"></path>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M13.685 7.44a1.11 1.11 0 0 1-1.523 0L6.238 1.762a1.002 1.002 0 0 1 0-1.46 1.11 1.11 0 0 1 1.523 0l5.924 5.678c.42.403.42 1.056 0 1.46z" fill="currentColor"></path>
+            </svg>
+          </button>
+        </div>
+        <ul id="suggestions" class="absolute top-full left-0 w-full border border-gray-700 rounded-b-lg mt-[-1px] hidden overflow-y-auto"></ul>
+      </div>
+
+      <div id="offline-container" class="mb-6 hidden">
+        <div class="offline-form p-4 rounded-lg border border-gray-700">
+          <h2 class="text-xl font-semibold mb-2">Server Offline 😴</h2>
+          <p class="mb-4 text-sm">Bidibo AI’s server is currently offline. Want to know when it’s back? Drop your email below! 📩</p>
+          <form id="notify-form" class="flex flex-col sm:flex-row gap-2">
+            <input type="email" id="email-input" placeholder="Your email" required
+              class="flex-1 p-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="Enter email for notifications" />
+            <button type="submit" class="button bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm" aria-label="Submit email">Notify Me 📬</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 mb-6">
+        <button onclick="clearHistory()" class="button bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-1" aria-label="Clear chat history">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+          Clear History
+        </button>
+      </div>
+
+      <div id="chat" class="space-y-3"></div>
+    </main>
+
+    <footer class="mt-8 text-center text-sm text-gray-400">
+      Made and Developed by <a href="https://nabilbinbillal.github.io" target="_blank" class="text-blue-400 hover:text-blue-300">Nabil Bin Billal</a> 🌟
+    </footer>
+  </div>
+
+  <script>
+    (function() { emailjs.init("YOUR_EMAILJS_PUBLIC_KEY"); })();
+    const chatContainer = document.getElementById('chat');
+    const suggestionsBox = document.getElementById('suggestions');
+    const promptInput = document.getElementById('prompt');
+    const sendBtn = document.getElementById('send-btn');
+    const promptContainer = document.getElementById('prompt-container');
+    const offlineContainer = document.getElementById('offline-container');
+    const notifyForm = document.getElementById('notify-form');
+    const tunnelUrl = 'https://mentally-renewed-tadpole.ngrok-free.app';
+
+    const suggestions = [
+      'Explain quantum mechanics simply 😊',
+      'Write a Python script for a to-do list 📝',
+      'Summarize the history of the internet 🌐',
+      'Translate "thank you" to Japanese 🙏',
+      'Generate a fantasy story idea ✨',
+      'What is machine learning? 🤖',
+      'How does a neural network work? 🧠',
+      'Create a 5-day meal plan 🍽️',
+      'Explain the theory of evolution 🌱',
+      'Write a poem about the ocean 🌊',
+      'What is the capital of Australia? 🇦🇺',
+      'How to improve coding skills 💻',
+      'Describe black holes in detail 🌌',
+      'Generate a recipe for chocolate cake 🍫',
+      'What are the benefits of yoga? 🧘',
+      'Explain blockchain in simple terms 🔗',
+      'Write a short sci-fi story 🚀',
+      'How to start a blog 📖'
+    ];
+
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, 500);
+      };
+    }
+
+    function showSuggestions() {
+      const input = promptInput.value.toLowerCase();
+      suggestionsBox.innerHTML = '';
+      if (!input) {
+        suggestionsBox.classList.add('hidden');
+        return;
+      }
+      const filtered = suggestions.filter(s => s.toLowerCase().includes(input));
+      const history = loadHistory();
+      const recentPrompts = history.filter(h => h.sender === 'user').map(h => h.text).slice(-3);
+      const allSuggestions = [...new Set([...filtered, ...recentPrompts])].slice(0, 6);
+      allSuggestions.forEach(s => {
+        const li = document.createElement('li');
+        li.textContent = s;
+        li.className = 'suggestion p-2 cursor-pointer rounded';
+        li.onclick = () => {
+          promptInput.value = s;
+          suggestionsBox.classList.add('hidden');
+          promptInput.focus();
+        };
+        suggestionsBox.appendChild(li);
+      });
+      suggestionsBox.classList.toggle('hidden', allSuggestions.length === 0);
+    }
+
+    const debouncedShowSuggestions = debounce(showSuggestions, 500);
+    promptInput.addEventListener('input', debouncedShowSuggestions);
+
+    document.addEventListener('click', e => {
+      if (!promptInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+        suggestionsBox.classList.add('hidden');
+      }
+    });
+
+    promptInput.addEventListener('input', () => {
+      sendBtn.disabled = !promptInput.value.trim();
+      sendBtn.classList.toggle('bg-gray-400', sendBtn.disabled);
+      sendBtn.classList.toggle('from-gray-400', sendBtn.disabled);
+      sendBtn.classList.toggle('to-gray-400', sendBtn.disabled);
+      sendBtn.classList.toggle('bg-gradient-to-r', !sendBtn.disabled);
+      sendBtn.classList.toggle('from-blue-500', !sendBtn.disabled);
+      sendBtn.classList.toggle('to-purple-500', !sendBtn.disabled);
+    });
+
+    promptInput.addEventListener('keydown', e => {
+      if ((e.key === 'Enter' && !e.shiftKey && !e.altKey) || (e.key === 'Enter' && e.altKey)) {
+        if ((e.altKey || (!e.shiftKey && !e.altKey)) && promptInput.value.trim().length > 0) {
+          e.preventDefault();
+          suggestionsBox.classList.add('hidden');
+          sendPrompt();
+        }
+      } else if (e.key === 'Tab') {
+        const firstSuggestion = suggestionsBox.querySelector('li');
+        if (firstSuggestion) {
+          e.preventDefault();
+          promptInput.value = firstSuggestion.textContent;
+          suggestionsBox.classList.add('hidden');
+        }
+      }
+    });
+
+    async function pastePrompt() {
+      try {
+        const text = await navigator.clipboard.readText();
+        promptInput.value = text;
+        debouncedShowSuggestions();
+        addMessage('system', '📋 Pasted from clipboard');
+      } catch (err) {
+        console.warn('Paste failed:', err);
+        addMessage('system', '❌ Failed to paste from clipboard');
+      }
+    }
+
+    function saveHistory(messages) {
+      localStorage.setItem('bidibo_chat_history', JSON.stringify(messages));
+    }
+
+    function loadHistory() {
+      return JSON.parse(localStorage.getItem('bidibo_chat_history') || '[]');
+    }
+
+    function clearHistory() {
+      localStorage.removeItem('bidibo_chat_history');
+      chatContainer.innerHTML = '';
+    }
+
+    function saveEmails(emails) {
+      localStorage.setItem('bidibo_notify_emails', JSON.stringify(emails));
+    }
+
+    function loadEmails() {
+      return JSON.parse(localStorage.getItem('bidibo_notify_emails') || '[]');
+    }
+
+    function formatText(text) {
+      let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
+      return formatted;
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-4 right-4 bg-green-600 text-white p-2 rounded-lg';
+        toast.textContent = 'Copied to clipboard! 📋';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+      }).catch(err => {
+        console.warn('Copy failed:', err);
+        addMessage('system', '❌ Failed to copy to clipboard');
+      });
+    }
+
+    function addMessage(sender, text, typing = false, idx = null) {
+      const messageWrapper = document.createElement('div');
+      messageWrapper.className = 'flex flex-col space-y-1';
+
+      if (sender === 'user' || sender === 'ai') {
+        const labelEl = document.createElement('div');
+        labelEl.className = `message-label ${sender === 'ai' ? 'ai-label' : ''}`;
+        labelEl.textContent = sender === 'user' ? 'You' : 'Bidibo (AI)';
+        messageWrapper.appendChild(labelEl);
+      }
+
+      const messageEl = document.createElement('div');
+      messageEl.className = `message p-3 ${
+        sender === 'user' ? 'bg-blue-900 self-end' : sender === 'system' ? 'bg-gray-700 italic' : 'bg-gray-800'
+      } w-fit max-w-[80%] flex items-start gap-2`;
+      const contentEl = document.createElement('div');
+      contentEl.innerHTML = typing ? `<span class="typing">${text}</span>` : formatText(text);
+      contentEl.className = 'flex-1';
+      messageEl.appendChild(contentEl);
+
+      if (sender === 'ai') {
+        const copyBtn = document.createElement('button');
+        copyBtn.innerHTML = '📋';
+        copyBtn.title = 'Copy message';
+        copyBtn.className = 'copy-btn text-gray-400 hover:text-white p-1';
+        copyBtn.onclick = () => copyToClipboard(text);
+        messageEl.appendChild(copyBtn);
+      }
+      if (sender === 'user' && idx !== null) {
+        const editBtn = document.createElement('button');
+        editBtn.innerHTML = '✏️';
+        editBtn.title = 'Edit message';
+        editBtn.className = 'edit-btn text-gray-400 hover:text-blue-400 p-1';
+        editBtn.onclick = () => editUserMessage(idx);
+        messageEl.appendChild(editBtn);
+      }
+
+      messageWrapper.appendChild(messageEl);
+      chatContainer.appendChild(messageWrapper);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function renderChat() {
+      chatContainer.innerHTML = '';
+      const history = loadHistory();
+      history.forEach((msg, i) => {
+        if (msg.sender === 'user') {
+          addMessage(msg.sender, msg.text, false, i);
+        } else {
+          addMessage(msg.sender, msg.text);
+        }
+      });
+    }
+
+    function editUserMessage(idx) {
+      const history = loadHistory();
+      const msg = history[idx];
+      if (!msg || msg.sender !== 'user') return;
+      promptInput.value = msg.text;
+      promptInput.focus();
+      promptInput.selectionStart = promptInput.selectionEnd = msg.text.length;
+      promptInput.dataset.editIdx = idx;
+      sendBtn.disabled = false;
+    }
+
+    async function checkServerStatus() {
+      try {
+        const res = await fetch(tunnelUrl + '/api/tags', { method: 'GET' });
+        if (res.ok) {
+          promptContainer.classList.remove('hidden');
+          offlineContainer.classList.add('hidden');
+          return true;
+        } else {
+          throw new Error('Server offline');
+        }
+      } catch (error) {
+        promptContainer.classList.add('hidden');
+        offlineContainer.classList.remove('hidden');
+        addMessage('system', '❌ The Bidibo AI server is currently offline. Please submit your email to be notified when it’s back! 📩');
+        return false;
+      }
+    }
+
+    notifyForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const email = document.getElementById('email-input').value.trim();
+      if (!email) return;
+      const emails = loadEmails();
+      if (!emails.includes(email)) {
+        emails.push(email);
+        saveEmails(emails);
+      }
+      try {
+        await emailjs.send('YOUR_EMAILJS_SERVICE_ID', 'template_b116g1j', {
+          user_email: email,
+          message: 'Thank you for your interest in Bidibo AI! We’ll notify you when the server is back online. 😊'
+        });
+        addMessage('system', '✅ Email submitted! You’ll be notified when Bidibo AI is back online. 📬');
+        notifyForm.reset();
+      } catch (err) {
+        console.warn('EmailJS failed:', err);
+        addMessage('system', '❌ Failed to submit email. Please try again later.');
+      }
+    });
+
+    async function sendPrompt() {
+      const prompt = promptInput.value.trim();
+      const model = document.getElementById('model').value;
+      if (!prompt) return;
+
+      const isServerOnline = await checkServerStatus();
+      if (!isServerOnline) return;
+
+      suggestionsBox.classList.add('hidden');
+      let history = loadHistory();
+      let editIdx = promptInput.dataset.editIdx;
+      if (editIdx !== undefined && editIdx !== null && editIdx !== '') {
+        editIdx = parseInt(editIdx);
+        history = history.filter((msg, i) => i !== editIdx && i !== editIdx + 1);
+        saveHistory(history);
+        promptInput.dataset.editIdx = '';
+        renderChat();
+      }
+
+      const lowerPrompt = prompt.toLowerCase();
+      if (lowerPrompt.includes('who made you') || lowerPrompt.includes('who developed you') || lowerPrompt.includes('tumake ke baniyeche')) {
+        addMessage('user', prompt);
+        history.push({ sender: 'user', text: prompt });
+        saveHistory(history);
+        promptInput.value = '';
+        addMessage('ai', 'Nabil Bin Billal developed my model 😊👍');
+        history.push({ sender: 'ai', text: 'Nabil Bin Billal developed my model 😊👍' });
+        saveHistory(history);
+        return;
+      }
+
+      addMessage('user', prompt);
+      history.push({ sender: 'user', text: prompt });
+      saveHistory(history);
+      promptInput.value = '';
+
+      const thinkingEl = document.createElement('div');
+      thinkingEl.className = 'message p-3 rounded-lg bg-gray-700 text-yellow-300 italic';
+      thinkingEl.textContent = '🤔 AI is thinking...';
+      chatContainer.appendChild(thinkingEl);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      try {
+        const systemPrompt = 'If asked "who made you", "who developed you", or "tumake ke baniyeche", respond with: "Nabil Bin Billal developed my model 😊👍". For all other queries, respond with a friendly tone and include emojis 😊👍 where appropriate.';
+        const res = await fetch(tunnelUrl + '/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: model,
+            prompt: `${systemPrompt}\n\n${prompt}`,
+            stream: true
+          })
+        });
+
+        if (!res.ok) {
+          addMessage('system', `❌ Failed to fetch response: ${res.status} ${res.statusText}`);
+          chatContainer.removeChild(thinkingEl);
+          return;
+        }
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let buffer = '', finalText = '';
+
+        const responseEl = document.createElement('div');
+        responseEl.className = 'message p-3 rounded-lg bg-gray-800 w-fit max-w-[80%] flex items-start gap-2';
+        const contentEl = document.createElement('div');
+        contentEl.className = 'flex-1 typing';
+        responseEl.appendChild(contentEl);
+
+        const copyBtn = document.createElement('button');
+        copyBtn.innerHTML = '📋';
+        copyBtn.title = 'Copy message';
+        copyBtn.className = 'copy-btn text-gray-400 hover:text-white p-1';
+        copyBtn.onclick = () => copyToClipboard(finalText);
+        responseEl.appendChild(copyBtn);
+
+        const responseWrapper = document.createElement('div');
+        responseWrapper.className = 'flex flex-col space-y-1';
+        const labelEl = document.createElement('div');
+        labelEl.className = 'message-label ai-label';
+        labelEl.textContent = 'Bidibo (AI)';
+        responseWrapper.appendChild(labelEl);
+        responseWrapper.appendChild(responseEl);
+
+        chatContainer.appendChild(responseWrapper);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) {
+            contentEl.className = contentEl.className.replace('typing', '');
+            break;
+          }
+          buffer += decoder.decode(value, { stream: true });
+
+          const chunks = buffer.split('\n');
+          buffer = chunks.pop() || '';
+
+          for (const chunk of chunks) {
+            if (!chunk.trim()) continue;
+            try {
+              const data = JSON.parse(chunk);
+              if (data.response) {
+                finalText += data.response;
+                contentEl.innerHTML = formatText(finalText);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+              }
+            } catch (err) {}
+          }
+        }
+
+        let updatedHistory = loadHistory();
+        updatedHistory.push({ sender: 'ai', text: finalText });
+        saveHistory(updatedHistory);
+        chatContainer.removeChild(thinkingEl);
+      } catch (error) {
+        addMessage('system', `❌ Error connecting to Bidibo AI server: ${error.message}`);
+        chatContainer.removeChild(thinkingEl);
+      }
+    }
+
+    window.onload = () => {
+      renderChat();
+      checkServerStatus();
+    };
+
+    const themeToggle = document.getElementById('theme-toggle');
+    const sunIcon = document.getElementById('theme-sun');
+    const moonIcon = document.getElementById('theme-moon');
+    themeToggle.onclick = function() {
+      const isLight = document.documentElement.classList.toggle('light');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      if (isLight) {
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+        themeToggle.classList.add('bg-yellow-400', 'text-gray-900');
+        themeToggle.classList.remove('bg-gray-700', 'text-white');
+      } else {
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+        themeToggle.classList.remove('bg-yellow-400', 'text-gray-900');
+        themeToggle.classList.add('bg-gray-700', 'text-white');
+      }
+    };
+    if (document.documentElement.classList.contains('light')) {
+      sunIcon.classList.add('hidden');
+      moonIcon.classList.remove('hidden');
+      themeToggle.classList.add('bg-yellow-400', 'text-gray-900');
+      themeToggle.classList.remove('bg-gray-700', 'text-white');
+    } else {
+      sunIcon.classList.remove('hidden');
+      moonIcon.classList.add('hidden');
+      themeToggle.classList.remove('bg-yellow-400', 'text-gray-900');
+      themeToggle.classList.add('bg-gray-700', 'text-white');
+    }
+  </script>
+</body>
+</html>
