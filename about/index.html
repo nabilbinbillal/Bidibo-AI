@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bidibo AI - Your Smart AI Assistant by Nabil Bin Billal</title>
+  <meta name="description" content="Discover Bidibo AI, a locally-hosted AI chatbot powered by Ollama, created by Nabil Bin Billal. Chat, learn, code, and explore with emoji-rich responses!" />
+  <meta name="keywords" content="Bidibo AI, AI chatbot, Ollama, Nabil Bin Billal, artificial intelligence, web development, science, sustainability" />
+  <meta name="author" content="Nabil Bin Billal" />
+  <meta name="robots" content="index, follow" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Bidibo AI - Smart AI Assistant" />
+  <meta property="og:description" content="Explore Bidibo AI, a powerful AI chatbot by Nabil Bin Billal. Powered by Ollama, it offers smart conversations, coding help, and more!" />
+  <meta property="og:image" content="https://em-content.zobj.net/source/microsoft-teams/363/robot_1f916.png" />
+  <meta property="og:url" content="https://your-vercel-app.vercel.app" />
+  <meta property="og:type" content="website" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bidibo AI - Smart AI Assistant by Nabil Bin Billal" />
+  <meta name="twitter:description" content="Experience Bidibo AI, a locally-hosted chatbot by Nabil Bin Billal, powered by Ollama. Chat, learn, and code with ease!" />
+  <meta name="twitter:image" content="https://em-content.zobj.net/source/microsoft-teams/363/robot_1f916.png" />
+  <meta name="twitter:site" content="@nabilbinbillal" />
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Bidibo AI",
+        "description": "A locally-hosted AI chatbot powered by Ollama, developed by Nabil Bin Billal, offering smart conversations and coding assistance.",
+        "url": "https://your-vercel-app.vercel.app",
+        "creator": {
+          "@type": "Person",
+          "name": "Nabil Bin Billal",
+          "url": "https://nabilbinbillal.github.io"
+        },
+        "applicationCategory": "Communication",
+        "operatingSystem": "Web"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Nabil Bin Billal",
+        "url": "https://nabilbinbillal.github.io",
+        "sameAs": [
+          "https://www.facebook.com/nabilbinbillal",
+          "https://www.linkedin.com/in/nabilbinbillal",
+          "https://www.instagram.com/nabilbinbillal",
+          "https://www.youtube.com/@NabilBinBillal",
+          "https://x.com/nabilbinbillal",
+          "https://github.com/nabilbinbillal",
+          "https://www.threads.net/@nabilbinbillal"
+        ],
+        "email": "mailto:nabilbinbillal@gmail.com",
+        "description": "Web Developer at Bidibo News, writer, and advocate for science and sustainability."
+      }
+    ]
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
+  </script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e40af, #7e22ce);
+      font-family: 'Inter', sans-serif;
+      color: #fff;
+    }
+    .light body {
+      background: linear-gradient(135deg, #dbeafe, #f3e8ff);
+      color: #1e40af;
+    }
+    .light .card {
+      background-color: #eff6ff !important;
+      color: #1e40af !important;
+    }
+    .light .button {
+      background-color: #bfdbfe !important;
+      color: #1e40af !important;
+    }
+    .light .button:hover {
+      background-color: #93c5fd !important;
+    }
+    .light input, .light textarea {
+      background-color: #fff !important;
+      color: #1e40af !important;
+      border-color: #93c5fd !important;
+    }
+    .light h2, .light h3, .light p {
+      color: #1e40af !important;
+    }
+    h1, h2, h3 {
+      font-family: 'Poppins', sans-serif;
+    }
+    .card {
+      background: rgba(17, 24, 39, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+    }
+    .button {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+    }
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .theme-toggle svg {
+      transition: transform 0.3s ease;
+    }
+    .theme-toggle:hover svg {
+      transform: rotate(15deg);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes logoRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in forwards;
+    }
+    input:focus, textarea:focus {
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+      border-color: #3b82f6;
+    }
+    .social-link:hover {
+      color: #93c5fd !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4 sm:p-6">
+  <div class="w-full max-w-4xl flex-1 flex flex-col">
+    <header class="flex flex-col items-center mb-8 relative">
+      <img src="https://em-content.zobj.net/source/microsoft-teams/363/robot_1f916.png" alt="Bidibo AI Logo" class="w-24 h-24 mb-4" style="animation: logoRotate 20s linear infinite" />
+      <h1 class="text-4xl sm:text-5xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+        Bidibo AI
+      </h1>
+      <p class="text-lg sm:text-xl text-center mt-2">Your Smart AI Assistant Powered by Ollama 🤖</p>
+      <button id="theme-toggle" class="theme-toggle button bg-gray-700 text-white absolute right-0 top-0 shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="Toggle theme">
+        <span id="theme-toggle-icon">
+          <svg id="theme-sun" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5" fill="#fbbf24"/>
+            <g stroke="#fbbf24">
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </g>
+          </svg>
+          <svg id="theme-moon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" fill="#818cf8"/>
+          </svg>
+        </span>
+      </button>
+      <a href="/bidibo-ai.html" class="button bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-lg mt-6 text-lg font-semibold" aria-label="Try Bidibo AI">Try Bidibo AI Now 🚀</a>
+    </header>
+
+    <main class="flex-1">
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold text-center mb-6">What is Bidibo AI? 🌟</h2>
+        <div class="card p-6 fade-in">
+          <p class="text-lg">Bidibo AI is a cutting-edge, locally-hosted AI chatbot powered by <a href="https://ollama.com" target="_blank" class="text-blue-400 hover:text-blue-300">Ollama</a>. Developed by Nabil Bin Billal, it delivers smart, emoji-rich conversations for learning, coding, and exploring ideas. Whether you’re a student, developer, or curious mind, Bidibo AI is your go-to assistant! 😊👍</p>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold text-center mb-6">How Can Bidibo AI Help You? 🤖</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="card p-6 fade-in" style="animation-delay: 0.2s">
+            <h3 class="text-xl font-semibold mb-2">Learn Complex Concepts 📚</h3>
+            <p>Struggling with quantum mechanics or blockchain? Bidibo AI explains complex topics in simple, friendly terms with examples and emojis to make learning fun! 😄</p>
+          </div>
+          <div class="card p-6 fade-in" style="animation-delay: 0.4s">
+            <h3 class="text-xl font-semibold mb-2">Code Like a Pro 💻</h3>
+            <p>Need a Python script or help debugging? Bidibo AI generates code snippets, explains logic, and suggests optimizations to boost your coding skills. 🚀</p>
+          </div>
+          <div class="card p-6 fade-in" style="animation-delay: 0.6s">
+            <h3 class="text-xl font-semibold mb-2">Get Creative Ideas ✨</h3>
+            <p>From fantasy stories to meal plans, Bidibo AI sparks creativity with unique ideas and detailed suggestions tailored to your needs. 🌈</p>
+          </div>
+          <div class="card p-6 fade-in" style="animation-delay: 0.8s">
+            <h3 class="text-xl font-semibold mb-2">Stay Productive 📝</h3>
+            <p>Organize tasks, translate languages, or summarize articles—Bidibo AI helps you stay efficient with quick, accurate responses. ⏰</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold text-center mb-6">Meet the Creator: Nabil Bin Billal 🌟</h2>
+        <div class="card p-6 flex flex-col sm:flex-row items-center gap-6 fade-in">
+          <img src="https://avatars.githubusercontent.com/u/123456789?v=4" alt="Nabil Bin Billal" class="w-32 h-32 rounded-full shadow-lg" />
+          <div>
+            <h3 class="text-xl font-semibold mb-2">Nabil Bin Billal</h3>
+            <p class="mb-4">Nabil Bin Billal is a passionate web developer, science writer, and sustainability advocate. Specializing in the MERN stack, Android, and WordPress, he crafts user-focused applications like Bidibo AI. As a writer for <a href="https://www.theteenmagazine.com" target="_blank" class="text-blue-400 hover:text-blue-300">The Teen Magazine</a> and moderator for science communities on Facebook, Nabil fosters curiosity and critical thinking.</p>
+            <p class="mb-4">He leads <a href="https://www.bidibo.xyz" target="_blank" class="text-blue-400 hover:text-blue-300">Bidibo News</a> and contributes to <a href="https://www.yunuscentre.org/3zero-club" target="_blank" class="text-blue-400 hover:text-blue-300">3ZERO Club</a>, organizing tree-planting drives and climate workshops. A golden A+ student at Brahmanbaria Government College and Talentpool scholarship awardee, Nabil is dedicated to innovation and environmental impact. 🌱</p>
+            <div class="flex flex-wrap gap-4">
+              <a href="https://nabilbinbillal.github.io" target="_blank" class="social-link text-blue-400 hover:text-blue-300">Portfolio 🌐</a>
+              <a href="https://aboutnabil.pages.dev" target="_blank" class="social-link text-blue-400 hover:text-blue-300">About Nabil 📝</a>
+              <a href="https://nabilbinbillal.github.io/faq" target="_blank" class="social-link text-blue-400 hover:text-blue-300">FAQ ❓</a>
+              <a href="https://www.facebook.com/nabilbinbillal" target="_blank" class="social-link text-blue-400 hover:text-blue-300">Facebook 📘</a>
+              <a href="https://www.linkedin.com/in/nabilbinbillal" target="_blank" class="social-link text-blue-400 hover:text-blue-300">LinkedIn 💼</a>
+              <a href="https://www.instagram.com/nabilbinbillal" target="_blank" class="social-link text-blue-400 hover:text-blue-300">Instagram 📸</a>
+              <a href="https://www.youtube.com/@NabilBinBillal" target="_blank" class="social-link text-blue-400 hover:text-blue-300">YouTube 🎥</a>
+              <a href="https://x.com/nabilbinbillal" target="_blank" class="social-link text-blue-400 hover:text-blue-300">X 🐦</a>
+              <a href="https://github.com/nabilbinbillal" target="_blank" class="social-link text-blue-400 hover:text-blue-300">GitHub 🛠️</a>
+              <a href="https://www.threads.net/@nabilbinbillal" target="_blank" class="social-link text-blue-400 hover:text-blue-300">Threads 🧵</a>
+              <a href="mailto:nabilbinbillal@gmail.com" class="social-link text-blue-400 hover:text-blue-300">Email 📧</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold text-center mb-6">Get in Touch 📬</h2>
+        <div class="card p-6 fade-in">
+          <p class="text-lg mb-4">Have questions about Bidibo AI or want to collaborate with Nabil? Drop a message below! 😊</p>
+          <form id="contact-form" class="flex flex-col gap-4">
+            <input type="text" id="name" placeholder="Your Name" required class="p-3 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="Enter your name" />
+            <input type="email" id="email" placeholder="Your Email" required class="p-3 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="Enter your email" />
+            <textarea id="message" rows="4" placeholder="Your Message" required class="p-3 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none" aria-label="Enter your message"></textarea>
+            <button type="submit" class="button bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-lg text-lg font-semibold" aria-label="Submit contact form">Send Message 🚀</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mt-8 text-center text-sm text-gray-400 fade-in">
+      Made with ❤️ by <a href="https://nabilbinbillal.github.io" target="_blank" class="text-blue-400 hover:text-blue-300">Nabil Bin Billal</a> | Powered by <a href="https://ollama.com" target="_blank" class="text-blue-400 hover:text-blue-300">Ollama</a> 🌟
+    </footer>
+  </div>
+
+  <script>
+    (function() { emailjs.init("template_bqpompj"); })();
+
+    const contactForm = document.getElementById('contact-form');
+    contactForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      if (!name || !email || !message) return;
+
+      try {
+        await emailjs.send('YOUR_EMAILJS_SERVICE_ID', 'template_b116g1j', {
+          user_email: email,
+          message: `Message from ${name}: ${message}`
+        });
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-4 right-4 bg-green-600 text-white p-3 rounded-lg fade-in';
+        toast.textContent = 'Message sent! 📬 You’ll hear from us soon! 😊';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+        contactForm.reset();
+      } catch (err) {
+        console.warn('EmailJS failed:', err);
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-4 right-4 bg-red-600 text-white p-3 rounded-lg fade-in';
+        toast.textContent = '❌ Failed to send message. Please try again later.';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
+    });
+
+    const themeToggle = document.getElementById('theme-toggle');
+    const sunIcon = document.getElementById('theme-sun');
+    const moonIcon = document.getElementById('theme-moon');
+    themeToggle.onclick = function() {
+      const isLight = document.documentElement.classList.toggle('light');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      if (isLight) {
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+        themeToggle.classList.add('bg-yellow-400', 'text-gray-900');
+        themeToggle.classList.remove('bg-gray-700', 'text-white');
+      } else {
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+        themeToggle.classList.remove('bg-yellow-400', 'text-gray-900');
+        themeToggle.classList.add('bg-gray-700', 'text-white');
+      }
+    };
+    if (document.documentElement.classList.contains('light')) {
+      sunIcon.classList.add('hidden');
+      moonIcon.classList.remove('hidden');
+      themeToggle.classList.add('bg-yellow-400', '发动机text-gray-900');
+      themeToggle.classList.remove('bg-gray-700', 'text-white');
+    } else {
+      sunIcon.classList.remove('hidden');
+      moonIcon.classList.add('hidden');
+      themeToggle.classList.remove('bg-yellow-400', 'text-gray-900');
+      themeToggle.classList.add('bg-gray-700', 'text-white');
+    }
+  </script>
+</body>
+</html>
