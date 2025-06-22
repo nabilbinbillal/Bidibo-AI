@@ -10,21 +10,23 @@
   <meta name="robots" content="index, follow" />
 
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
 
-<meta name="google-site-verification" content="Y9tHYFLfin-aljp87nbNaujFCTjN-uELZ7RSj0VbEl4" />
+  <!-- MathJax for LaTeX rendering -->
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RR9M3526WQ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta name="google-site-verification" content="Y9tHYFLfin-aljp87nbNaujFCTjN-uELZ7RSj0VbEl4" />
 
-  gtag('config', 'G-RR9M3526WQ');
-</script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RR9M3526WQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-RR9M3526WQ');
+  </script>
 
   <!-- Open Graph -->
   <meta property="og:title" content="Bidibo AI - Smart Chat" />
@@ -54,16 +56,10 @@
       "operatingSystem": "Web"
     }
   </script>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script>
-    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-      document.documentElement.classList.add('light');
-    } else {
-      document.documentElement.classList.remove('light');
-    }
-  </script>
   <style>
     body {
       background: linear-gradient(135deg, #1e40af, #7e22ce);
@@ -215,6 +211,15 @@
     .light .ai-label {
       color: #a78bfa;
     }
+    code {
+      background-color: #2d3748;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .light code {
+      background-color: #e2e8f0;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-4 sm:p-6">
@@ -261,7 +266,7 @@
           <textarea id="prompt" rows="2" placeholder="Type your prompt..."
             class="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none transition-all duration-200" aria-label="Enter your prompt"></textarea>
           <button id="send-btn" onclick="sendPrompt()" title="Send prompt"
-            class="absolute right-2 bottom-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white p-2 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-400 z-10 group disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
+            class="absolute right-2 bottom-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white p-2 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-400 z-10 disabled:opacity-60 disabled:cursor-not-allowed"
             disabled aria-label="Send prompt">
             <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-12">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M7 16c-.595 0-1.077-.462-1.077-1.032V1.032C5.923.462 6.405 0 7 0s1.077.462 1.077 1.032v13.936C8.077 15.538 7.595 16 7 16z" fill="currentColor"></path>
@@ -276,7 +281,7 @@
       <div id="offline-container" class="mb-6 hidden">
         <div class="offline-form p-4 rounded-lg border border-gray-700">
           <h2 class="text-xl font-semibold mb-2">Server Offline 😴</h2>
-          <p class="mb-4 text-sm">Bidibo AI’s server is currently offline. Want to know when it’s back? Drop your email below! 📩</p>
+          <p class="mb-4 text-sm">Bidibo AI's server is currently offline. Want to know when it's back? Drop your email below! 📩</p>
           <form id="notify-form" class="flex flex-col sm:flex-row gap-2">
             <input type="email" id="email-input" placeholder="Your email" required
               class="flex-1 p-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="Enter email for notifications" />
@@ -288,7 +293,7 @@
       <div class="flex items-center gap-3 mb-6">
         <button onclick="clearHistory()" class="button bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-1" aria-label="Clear chat history">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1) 1v3M4 7h16"/>
           </svg>
           Clear History
         </button>
@@ -296,10 +301,9 @@
 
       <div id="chat" class="space-y-3"></div>
     </main>
-<footer class="mt-8 mb-6 sm:mb-0 text-center text-sm text-gray-400">
-  Made and Developed by <a href="https://nabilbinbillal.github.io" target="_blank" class="text-blue-400 hover:text-blue-300">Nabil Bin Billal</a> 🌟
-</footer>
-
+    <footer class="mt-8 mb-6 sm:mb-0 text-center text-sm text-gray-400">
+      Made and Developed by <a href="https://nabilbinbillal.github.io" target="_blank" class="text-blue-400 hover:text-blue-300">Nabil Bin Billal</a> 🌟
+    </footer>
   </div>
 
   <script>
@@ -313,6 +317,11 @@
     const notifyForm = document.getElementById('notify-form');
     const tunnelUrl = 'https://mentally-renewed-tadpole.ngrok-free.app';
 
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.error(`Error: ${message} at ${source}:${lineno}:${colno}`, error);
+      addMessage('system', '❌ Oops, something went wrong! 😅 Check the console or try again.');
+    };
+
     const suggestions = [
       'Explain quantum mechanics simply 😊',
       'Write a Python script for a to-do list 📝',
@@ -321,18 +330,86 @@
       'Generate a fantasy story idea ✨',
       'What is machine learning? 🤖',
       'How does a neural network work? 🧠',
-      'Create a 5-day meal plan 🍽️',
-      'Explain the theory of evolution 🌱',
-      'Write a poem about the ocean 🌊',
-      'What is the capital of Australia? 🇦🇺',
+      'Create a 5-day meal plan 🍋',
+      'Explain the theory of equations 🌟',
+      'Write a poem about the stars 🌌',
+      'What is the capital of Brazil? 🇧🇷',
       'How to improve coding skills 💻',
-      'Describe black holes in detail 🌌',
-      'Generate a recipe for chocolate cake 🍫',
-      'What are the benefits of yoga? 🧘',
+      'Describe black holes in detail 🕳️',
+      'Generate a recipe for a vegan burger 🍔',
+      'What are the benefits of meditation? 🧘',
       'Explain blockchain in simple terms 🔗',
-      'Write a short sci-fi story 🚀',
-      'How to start a blog 📖'
+      'Write a short mystery story 🔍',
+      'How to start a podcast 🎙️'
     ];
+
+    // Format text for markdown and LaTeX
+    function formatText(text) {
+      // Handle triple backtick code blocks first
+      let formatted = text.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+      // Handle single backtick inline code
+      formatted = formatted.replace(/`([^`]+)`/g, '<code class="bg-gray-700 px-1 rounded">$1</code>');
+      // Preserve LaTeX delimiters exactly as they are
+      formatted = formatted.replace(/\\\[([\s\S]*?)\\\]/g, '\\[$1\\]');
+      formatted = formatted.replace(/\\\(([\s\S]*?)\\\)/g, '\\($1\\)');
+      // Handle markdown formatting after code and LaTeX
+      formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
+      formatted = formatted.replace(/__(.*?)__/g, '<u>$1</u>');
+      // Convert common math expressions to LaTeX (only if not already in delimiters)
+      formatted = formatted.replace(/(?<!\\\[|\\\()(sin|cos|tan)\(([^)]+)\)(?!\\]|\\\))/g, '\\($1($2)\\)');
+      formatted = formatted.replace(/(?<!\\\[|\\\()sqrt\(([^)]+)\)(?!\\]|\\\))/g, '\\(\\sqrt{$1}\\)');
+      formatted = formatted.replace(/(?<!\\\[|\\\()(\d+)\/(\d+)(?!\\]|\\\))/g, '\\(\\frac{$1}{$2}\\)');
+      return formatted;
+    }
+
+    // Add message to chat
+    function addMessage(sender, text, typing = false, idx = null) {
+      const messageWrapper = document.createElement('div');
+      messageWrapper.className = 'flex flex-col space-y-1';
+
+      if (sender === 'user' || sender === 'ai') {
+        const labelEl = document.createElement('div');
+        labelEl.className = `message-label ${sender === 'ai' ? 'ai-label' : ''}`;
+        labelEl.textContent = sender === 'user' ? 'You' : 'Bidibo (AI)';
+        messageWrapper.appendChild(labelEl);
+      }
+
+      const messageEl = document.createElement('div');
+      messageEl.className = `message p-3 ${
+        sender === 'user' ? 'bg-blue-900 self-end' : sender === 'system' ? 'bg-gray-700 italic' : 'bg-gray-800'
+      } w-fit max-w-[80%] flex items-start gap-2`;
+      const contentEl = document.createElement('div');
+      contentEl.innerHTML = typing ? `<span class="typing">${formatText(text)}</span>` : formatText(text);
+      contentEl.className = 'flex-1';
+      messageEl.appendChild(contentEl);
+
+      if (sender === 'ai') {
+        const copyBtn = document.createElement('button');
+        copyBtn.innerHTML = '📋';
+        copyBtn.title = 'Copy message';
+        copyBtn.className = 'copy-btn text-gray-400 hover:text-white p-1';
+        copyBtn.onclick = () => copyToClipboard(text);
+        messageEl.appendChild(copyBtn);
+      }
+      if (sender === 'user' && idx !== null) {
+        const editBtn = document.createElement('button');
+        editBtn.innerHTML = '✏️';
+        editBtn.title = 'Edit message';
+        editBtn.className = 'edit-btn text-gray-400 hover:text-blue-400 p-1';
+        editBtn.onclick = () => editUserMessage(idx);
+        messageEl.appendChild(editBtn);
+      }
+
+      messageWrapper.appendChild(messageEl);
+      chatContainer.appendChild(messageWrapper);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      // Trigger MathJax rendering
+      if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+        MathJax.typesetPromise([messageEl]).catch(err => console.warn('MathJax typesetting failed:', err));
+      }
+    }
 
     function debounce(func, wait) {
       let timeout;
@@ -342,8 +419,21 @@
           func(...args);
         };
         clearTimeout(timeout);
-        timeout = setTimeout(later, 500);
+        timeout = setTimeout(later, wait);
       };
+    }
+
+    function updateSendButtonState() {
+      const hasText = promptInput.value.trim().length > 0;
+      sendBtn.disabled = !hasText;
+      
+      if (hasText) {
+        sendBtn.classList.remove('bg-gray-400');
+        sendBtn.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-purple-500');
+      } else {
+        sendBtn.classList.add('bg-gray-400');
+        sendBtn.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-purple-500');
+      }
     }
 
     function showSuggestions() {
@@ -365,6 +455,7 @@
           promptInput.value = s;
           suggestionsBox.classList.add('hidden');
           promptInput.focus();
+          updateSendButtonState();
         };
         suggestionsBox.appendChild(li);
       });
@@ -372,22 +463,16 @@
     }
 
     const debouncedShowSuggestions = debounce(showSuggestions, 500);
-    promptInput.addEventListener('input', debouncedShowSuggestions);
+    
+    promptInput.addEventListener('input', () => {
+      debouncedShowSuggestions();
+      updateSendButtonState();
+    });
 
     document.addEventListener('click', e => {
       if (!promptInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
         suggestionsBox.classList.add('hidden');
       }
-    });
-
-    promptInput.addEventListener('input', () => {
-      sendBtn.disabled = !promptInput.value.trim();
-      sendBtn.classList.toggle('bg-gray-400', sendBtn.disabled);
-      sendBtn.classList.toggle('from-gray-400', sendBtn.disabled);
-      sendBtn.classList.toggle('to-gray-400', sendBtn.disabled);
-      sendBtn.classList.toggle('bg-gradient-to-r', !sendBtn.disabled);
-      sendBtn.classList.toggle('from-blue-500', !sendBtn.disabled);
-      sendBtn.classList.toggle('to-purple-500', !sendBtn.disabled);
     });
 
     promptInput.addEventListener('keydown', e => {
@@ -403,6 +488,7 @@
           e.preventDefault();
           promptInput.value = firstSuggestion.textContent;
           suggestionsBox.classList.add('hidden');
+          updateSendButtonState();
         }
       }
     });
@@ -412,6 +498,7 @@
         const text = await navigator.clipboard.readText();
         promptInput.value = text;
         debouncedShowSuggestions();
+        updateSendButtonState();
         addMessage('system', '📋 Pasted from clipboard');
       } catch (err) {
         console.warn('Paste failed:', err);
@@ -440,65 +527,30 @@
       return JSON.parse(localStorage.getItem('bidibo_notify_emails') || '[]');
     }
 
-    function formatText(text) {
-      let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
-      return formatted;
-    }
-
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
         const toast = document.createElement('div');
         toast.className = 'fixed bottom-4 right-4 bg-green-600 text-white p-2 rounded-lg';
         toast.textContent = 'Copied to clipboard! 📋';
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2000);
-      }).catch(err => {
+      } catch (err) {
         console.warn('Copy failed:', err);
-        addMessage('system', '❌ Failed to copy to clipboard');
-      });
-    }
-
-    function addMessage(sender, text, typing = false, idx = null) {
-      const messageWrapper = document.createElement('div');
-      messageWrapper.className = 'flex flex-col space-y-1';
-
-      if (sender === 'user' || sender === 'ai') {
-        const labelEl = document.createElement('div');
-        labelEl.className = `message-label ${sender === 'ai' ? 'ai-label' : ''}`;
-        labelEl.textContent = sender === 'user' ? 'You' : 'Bidibo (AI)';
-        messageWrapper.appendChild(labelEl);
+        addMessage('system', '❌ Failed to copy to clipboard. Ensure clipboard permissions are enabled.');
+        // Fallback: Use execCommand
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          addMessage('system', '✅ Copied using fallback method.');
+        } catch (fallbackErr) {
+          addMessage('system', `❌ Fallback copy failed. Please copy manually: ${text}`);
+        }
+        document.body.removeChild(textarea);
       }
-
-      const messageEl = document.createElement('div');
-      messageEl.className = `message p-3 ${
-        sender === 'user' ? 'bg-blue-900 self-end' : sender === 'system' ? 'bg-gray-700 italic' : 'bg-gray-800'
-      } w-fit max-w-[80%] flex items-start gap-2`;
-      const contentEl = document.createElement('div');
-      contentEl.innerHTML = typing ? `<span class="typing">${text}</span>` : formatText(text);
-      contentEl.className = 'flex-1';
-      messageEl.appendChild(contentEl);
-
-      if (sender === 'ai') {
-        const copyBtn = document.createElement('button');
-        copyBtn.innerHTML = '📋';
-        copyBtn.title = 'Copy message';
-        copyBtn.className = 'copy-btn text-gray-400 hover:text-white p-1';
-        copyBtn.onclick = () => copyToClipboard(text);
-        messageEl.appendChild(copyBtn);
-      }
-      if (sender === 'user' && idx !== null) {
-        const editBtn = document.createElement('button');
-        editBtn.innerHTML = '✏️';
-        editBtn.title = 'Edit message';
-        editBtn.className = 'edit-btn text-gray-400 hover:text-blue-400 p-1';
-        editBtn.onclick = () => editUserMessage(idx);
-        messageEl.appendChild(editBtn);
-      }
-
-      messageWrapper.appendChild(messageEl);
-      chatContainer.appendChild(messageWrapper);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
     function renderChat() {
@@ -521,7 +573,7 @@
       promptInput.focus();
       promptInput.selectionStart = promptInput.selectionEnd = msg.text.length;
       promptInput.dataset.editIdx = idx;
-      sendBtn.disabled = false;
+      updateSendButtonState();
     }
 
     async function checkServerStatus() {
@@ -537,7 +589,7 @@
       } catch (error) {
         promptContainer.classList.add('hidden');
         offlineContainer.classList.remove('hidden');
-        addMessage('system', '❌ The Bidibo AI server is currently offline. Please submit your email to be notified when it’s back! 📩');
+        addMessage('system', '❌ The Bidibo AI server is currently offline. Please submit your email to be notified when it\'s back! 📩');
         return false;
       }
     }
@@ -554,9 +606,9 @@
       try {
         await emailjs.send('service_wydy6aq', 'template_bqpompj', {
           user_email: email,
-          message: 'Thank you for your interest in Bidibo AI! We’ll notify you when the server is back online. 😊'
+          message: 'Thank you for your interest in Bidibo AI! We\'ll notify you when the server is back online. 😊'
         });
-        addMessage('system', '✅ Email submitted! You’ll be notified when Bidibo AI is back online. 📬');
+        addMessage('system', '✅ Email submitted! You\'ll be notified when Bidibo AI is back online. 📬');
         notifyForm.reset();
       } catch (err) {
         console.warn('EmailJS failed:', err);
@@ -589,6 +641,7 @@
         history.push({ sender: 'user', text: prompt });
         saveHistory(history);
         promptInput.value = '';
+        updateSendButtonState();
         addMessage('ai', 'Nabil Bin Billal developed my model 😊👍');
         history.push({ sender: 'ai', text: 'Nabil Bin Billal developed my model 😊👍' });
         saveHistory(history);
@@ -599,6 +652,7 @@
       history.push({ sender: 'user', text: prompt });
       saveHistory(history);
       promptInput.value = '';
+      updateSendButtonState();
 
       const thinkingEl = document.createElement('div');
       thinkingEl.className = 'message p-3 rounded-lg bg-gray-700 text-yellow-300 italic';
@@ -607,7 +661,7 @@
       chatContainer.scrollTop = chatContainer.scrollHeight;
 
       try {
-        const systemPrompt = 'If asked "who made you", "who developed you", or "tumake ke baniyeche", respond with: "Nabil Bin Billal developed my model 😊👍". For all other queries, respond with a friendly tone and include emojis 😊👍 where appropriate.';
+        const systemPrompt = 'If asked "who made you", "who developed you", or "tumake ke baniyeche", respond with: "Nabil Bin Billal developed my model 😊👍". For all other queries, respond with a friendly tone and include emojis 😊👍 where appropriate. For mathematical expressions, use proper LaTeX syntax with \\[ \\] for display math and \\( \\) for inline math (e.g., \\[ \\sin(60^\\circ) = \\frac{\\sqrt{3}}{2} \\]). Avoid adding extra brackets around LaTeX expressions.';
         const res = await fetch(tunnelUrl + '/api/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -619,7 +673,7 @@
         });
 
         if (!res.ok) {
-          addMessage('system', `❌ Failed to fetch. No server is available to respond to your query. response: ${res.status} ${res.statusText}`);
+          addMessage('system', `❌ Failed to fetch. Server response: ${res.status} ${res.statusText}`);
           chatContainer.removeChild(thinkingEl);
           return;
         }
@@ -656,6 +710,9 @@
           const { value, done } = await reader.read();
           if (done) {
             contentEl.className = contentEl.className.replace('typing', '');
+            if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+              MathJax.typesetPromise([contentEl]).catch(err => console.warn('MathJax typesetting failed:', err));
+            }
             break;
           }
           buffer += decoder.decode(value, { stream: true });
@@ -671,6 +728,9 @@
                 finalText += data.response;
                 contentEl.innerHTML = formatText(finalText);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
+                if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+                  MathJax.typesetPromise([contentEl]).catch(err => console.warn('MathJax typesetting failed:', err));
+                }
               }
             } catch (err) {}
           }
@@ -681,7 +741,7 @@
         saveHistory(updatedHistory);
         chatContainer.removeChild(thinkingEl);
       } catch (error) {
-        addMessage('system', `❌ Error connecting to Bidibo AI server: ${error.message} <br> No server is available to respond to your query.`);
+        addMessage('system', `❌ Error connecting to Bidibo AI server: ${error.message}`);
         chatContainer.removeChild(thinkingEl);
       }
     }
@@ -689,37 +749,31 @@
     window.onload = () => {
       renderChat();
       checkServerStatus();
+      updateSendButtonState();
     };
 
     const themeToggle = document.getElementById('theme-toggle');
     const sunIcon = document.getElementById('theme-sun');
     const moonIcon = document.getElementById('theme-moon');
-    themeToggle.onclick = function() {
-      const isLight = document.documentElement.classList.toggle('light');
+
+    function setTheme(isLight) {
+      document.documentElement.classList.toggle('light', isLight);
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
-      if (isLight) {
-        sunIcon.classList.add('hidden');
-        moonIcon.classList.remove('hidden');
-        themeToggle.classList.add('bg-yellow-400', 'text-gray-900');
-        themeToggle.classList.remove('bg-gray-700', 'text-white');
-      } else {
-        sunIcon.classList.remove('hidden');
-        moonIcon.classList.add('hidden');
-        themeToggle.classList.remove('bg-yellow-400', 'text-gray-900');
-        themeToggle.classList.add('bg-gray-700', 'text-white');
-      }
-    };
-    if (document.documentElement.classList.contains('light')) {
-      sunIcon.classList.add('hidden');
-      moonIcon.classList.remove('hidden');
-      themeToggle.classList.add('bg-yellow-400', 'text-gray-900');
-      themeToggle.classList.remove('bg-gray-700', 'text-white');
-    } else {
-      sunIcon.classList.remove('hidden');
-      moonIcon.classList.add('hidden');
-      themeToggle.classList.remove('bg-yellow-400', 'text-gray-900');
-      themeToggle.classList.add('bg-gray-700', 'text-white');
+      sunIcon.classList.toggle('hidden', isLight);
+      moonIcon.classList.toggle('hidden', !isLight);
+      themeToggle.classList.toggle('bg-yellow-400', isLight);
+      themeToggle.classList.toggle('text-gray-900', isLight);
+      themeToggle.classList.toggle('bg-gray-700', !isLight);
+      themeToggle.classList.toggle('text-white', !isLight);
     }
+
+    themeToggle.addEventListener('click', () => {
+      setTheme(!document.documentElement.classList.contains('light'));
+    });
+
+    const savedTheme = localStorage.getItem('theme');
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    setTheme(savedTheme === 'light' || (!savedTheme && prefersLight));
   </script>
 </body>
 </html>
