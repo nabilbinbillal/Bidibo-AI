@@ -258,7 +258,7 @@
   </div>
 
   <script>
-    (function() { emailjs.init("template_bqpompj"); })();
+    (function() { emailjs.init("1PWC8JbjMVXZkdE6Z"); })();
 
     const contactForm = document.getElementById('contact-form');
     contactForm.addEventListener('submit', async e => {
@@ -269,7 +269,7 @@
       if (!name || !email || !message) return;
 
       try {
-        await emailjs.send('YOUR_EMAILJS_SERVICE_ID', 'template_b116g1j', {
+        await emailjs.send('service_wydy6aq', 'template_bqpompj', {
           user_email: email,
           message: `Message from ${name}: ${message}`
         });
