@@ -619,7 +619,7 @@
         });
 
         if (!res.ok) {
-          addMessage('system', `❌ Failed to fetch response: ${res.status} ${res.statusText}`);
+          addMessage('system', `❌ Failed to fetch. No server is available to respond to your query. response: ${res.status} ${res.statusText}`);
           chatContainer.removeChild(thinkingEl);
           return;
         }
