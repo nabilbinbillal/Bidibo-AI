@@ -681,7 +681,7 @@
         saveHistory(updatedHistory);
         chatContainer.removeChild(thinkingEl);
       } catch (error) {
-        addMessage('system', `❌ Error connecting to Bidibo AI server: ${error.message}`);
+        addMessage('system', `❌ Error connecting to Bidibo AI server: ${error.message} <br> No server is available to respond to your query.`);
         chatContainer.removeChild(thinkingEl);
       }
     }
