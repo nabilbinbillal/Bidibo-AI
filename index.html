@@ -676,6 +676,16 @@ if (lowerPrompt.includes('who made you') || lowerPrompt.includes('who developed 
   history.push({ sender: 'ai', text: 'Nabil Bin Billal is single and focused on his awesome projects! 😎' });
   saveHistory(history);
   return;
+} else if (lowerPrompt.includes('i am sabiha jahan') || lowerPrompt.includes('ami sabiha jahan')) {
+  addMessage('user', prompt);
+  history.push({ sender: 'user', text: prompt });
+  saveHistory(history);
+  promptInput.value = '';
+  updateSendButtonState();
+  addMessage('ai', 'You are a good, funny, and beautiful girl, always spreading joy, as Nabil said! 😊✨');
+  history.push({ sender: 'ai', text: 'You are a good, funny, and beautiful girl, always spreading joy, as Nabil said! 😊✨' });
+  saveHistory(history);
+  return;
 }
 
       addMessage('user', prompt);
