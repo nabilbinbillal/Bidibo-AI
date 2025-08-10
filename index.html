@@ -646,16 +646,6 @@ if (lowerPrompt.includes('who made you') || lowerPrompt.includes('who developed 
   history.push({ sender: 'ai', text: 'Nabil Bin Billal developed my model 😊👍' });
   saveHistory(history);
   return;
-} else if (lowerPrompt.includes('sabiha jahan')) {
-  addMessage('user', prompt);
-  history.push({ sender: 'user', text: prompt });
-  saveHistory(history);
-  promptInput.value = '';
-  updateSendButtonState();
-  addMessage('ai', 'Sabiha Jahan is a funny, beautiful, and good girl, always spreading joy and positivity wherever she goes! 😊✨');
-  history.push({ sender: 'ai', text: 'Sabiha Jahan is a funny, beautiful, and good girl, always spreading joy and positivity wherever she goes! 😊✨' });
-  saveHistory(history);
-  return;
 } else if (lowerPrompt.includes('nabil')) {
   addMessage('user', prompt);
   history.push({ sender: 'user', text: prompt });
@@ -676,17 +666,7 @@ if (lowerPrompt.includes('who made you') || lowerPrompt.includes('who developed 
   history.push({ sender: 'ai', text: 'Nabil Bin Billal is single and focused on his awesome projects! 😎' });
   saveHistory(history);
   return;
-} else if (lowerPrompt.includes('i am sabiha jahan') || lowerPrompt.includes('ami sabiha jahan')) {
-  addMessage('user', prompt);
-  history.push({ sender: 'user', text: prompt });
-  saveHistory(history);
-  promptInput.value = '';
-  updateSendButtonState();
-  addMessage('ai', 'You are a good, funny, and beautiful girl, always spreading joy, as Nabil said! 😊✨');
-  history.push({ sender: 'ai', text: 'You are a good, funny, and beautiful girl, always spreading joy, as Nabil said! 😊✨' });
-  saveHistory(history);
-  return;
-}
+} 
 
       addMessage('user', prompt);
       history.push({ sender: 'user', text: prompt });
