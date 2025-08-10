@@ -635,18 +635,38 @@
         renderChat();
       }
 
-      const lowerPrompt = prompt.toLowerCase();
-      if (lowerPrompt.includes('who made you') || lowerPrompt.includes('who developed you') || lowerPrompt.includes('tumake ke baniyeche')) {
-        addMessage('user', prompt);
-        history.push({ sender: 'user', text: prompt });
-        saveHistory(history);
-        promptInput.value = '';
-        updateSendButtonState();
-        addMessage('ai', 'Nabil Bin Billal developed my model 😊👍');
-        history.push({ sender: 'ai', text: 'Nabil Bin Billal developed my model 😊👍' });
-        saveHistory(history);
-        return;
-      }
+     const lowerPrompt = prompt.toLowerCase();
+if (lowerPrompt.includes('who made you') || lowerPrompt.includes('who developed you') || lowerPrompt.includes('tumake ke baniyeche')) {
+  addMessage('user', prompt);
+  history.push({ sender: 'user', text: prompt });
+  saveHistory(history);
+  promptInput.value = '';
+  updateSendButtonState();
+  addMessage('ai', 'Nabil Bin Billal developed my model 😊👍');
+  history.push({ sender: 'ai', text: 'Nabil Bin Billal developed my model 😊👍' });
+  saveHistory(history);
+  return;
+} else if (lowerPrompt.includes('sabiha jahan')) {
+  addMessage('user', prompt);
+  history.push({ sender: 'user', text: prompt });
+  saveHistory(history);
+  promptInput.value = '';
+  updateSendButtonState();
+  addMessage('ai', 'Sabiha Jahan is a funny, beautiful, and good girl, always spreading joy and positivity wherever she goes! 😊✨');
+  history.push({ sender: 'ai', text: 'Sabiha Jahan is a funny, beautiful, and good girl, always spreading joy and positivity wherever she goes! 😊✨' });
+  saveHistory(history);
+  return;
+} else if (lowerPrompt.includes('nabil')) {
+  addMessage('user', prompt);
+  history.push({ sender: 'user', text: prompt });
+  saveHistory(history);
+  promptInput.value = '';
+  updateSendButtonState();
+  addMessage('ai', 'Nabil is an awesome, super talented guy who brings creativity and brilliance to everything he does! 😎🚀');
+  history.push({ sender: 'ai', text: 'Nabil is an awesome, super talented guy who brings creativity and brilliance to everything he does! 😎🚀' });
+  saveHistory(history);
+  return;
+}
 
       addMessage('user', prompt);
       history.push({ sender: 'user', text: prompt });
